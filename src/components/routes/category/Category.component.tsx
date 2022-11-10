@@ -1,4 +1,4 @@
-import { CategoryContainer, Title } from './category.styles.jsx';
+import { CategoryContainer, Title } from './category.styles';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, Fragment } from 'react';
 // import { CategoriesContext } from "../../../contexts/categories.context";
@@ -8,8 +8,12 @@ import ProductCard from '../../product-card/ProductCard.component';
 import { selectCategoriesMap, selectCategoriesIsLoading } from '../../../store/categories/category.selector';
 import Spinner from '../../spinner/spinner.component';
 
+type CategoryRouteParams = {
+  category: string;
+};
+
 const Category = () => {
-  const { category } = useParams();
+  const { category } = useParams<keyof CategoryRouteParams>() as CategoryRouteParams;
   // const{categoriesMap}=useContext(CategoriesContext);
   const categoriesMap = useSelector(selectCategoriesMap);
   const isLoading = useSelector(selectCategoriesIsLoading);

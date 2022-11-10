@@ -1,7 +1,7 @@
-import { useState } from 'react';
-
+import { useState, ChangeEvent, FormEvent } from 'react';
+import { AuthError, AuthErrorCodes } from 'firebase/auth';
 import FormInput from '../../form-input/Form-input.component';
-import { SignupContainer } from '../sign-up-form/sign-up-form.styles';
+import { SignupContainer } from './sign-up-form.styles';
 import Button from '../../button/Button.component';
 import { useDispatch } from 'react-redux';
 import { signUpStart } from '../../../store/user/user.action';
@@ -12,7 +12,7 @@ const SignUpForm = () => {
     setInputFields(defultInputFields);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (password !== passwordConfirmation) {
@@ -24,7 +24,7 @@ const SignUpForm = () => {
 
       resetInputFields();
     } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
+      if ((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
         alert('email in use');
       } else console.log('error', error);
     }
@@ -39,7 +39,7 @@ const SignUpForm = () => {
 
   const [inputFileds, setInputFields] = useState(defultInputFields);
 
-  const onChangeHandler = (event) => {
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setInputFields({ ...inputFileds, [name]: value });
   };
